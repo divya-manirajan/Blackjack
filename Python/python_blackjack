@@ -50,6 +50,7 @@ def get_total(cards):
             total+=10
         else:
             total += 11
+            ace_count+=1
 
     while total > 21 and ace_count > 0:
         total -= 10  # Convert one Ace from 11 to 1
@@ -77,6 +78,9 @@ def deal(shuffled_deck):
     print_cards(player_hand)
 
     if(get_total(dealer_hand) == 21):
+        print("Dealer's Hand:")
+        print_cards(dealer_hand)
+
         if(get_total(player_hand) == 21):
             print("Tie")
             exit()
@@ -109,19 +113,8 @@ def hit(player_hand, dealer_hand, shuffled_deck):
     player_hand.append(shuffled_deck.pop(0))
 
     print("Player's Hand:")
-    for i in player_hand:
-        print(i.value," of ", i.suit)
-        if(type(i.value) == (int)):
-            total+= i.value
-        elif i.value!='ace':
-            total+=10
-        else:
-            total += 11
-            ace_count+=1
-
-    while total > 21 and ace_count > 0:
-        total -= 10  # Convert one Ace from 11 to 1
-        ace_count -= 1
+    print_cards(player_hand)
+    total = get_total(player_hand)
 
     if total > 21:
         print("Total Value:", total)
@@ -191,33 +184,17 @@ def play_hand(player_hand, dealer_hand, shuffled_deck):
             stay(player_hand, dealer_hand, shuffled_deck)
         else:
             break
-    
-    
 
-    # username = input("Enter username:")
-    # print("Username is: " + username)
 
 if __name__=="__main__":
 
     deck = make_deck()
-
-    # print_deck(deck)
-
     shuffled_deck = shuffle_deck(deck)
-
-    # print_deck(shuffled_deck)
-
-    # print_card(shuffled_deck.pop(0))
-    # print_card(shuffled_deck.pop(0))
-
-
-    # print_deck(shuffled_deck)
 
     player_hand, dealer_hand = deal(shuffled_deck)
 
     play_hand(player_hand, dealer_hand, shuffled_deck)
 
- 
 
 
 

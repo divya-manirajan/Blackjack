@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+    <button id="dealButton">Deal</button>
+
+    <script src="game.js"></script> 
+    <script>
+        document.getElementById('dealButton').addEventListener('click', () => {
+            const deck = make_deck();
+            const shuffledDeck = shuffle_deck(deck);
+            deal(shuffledDeck);
+        });
+    </script>
+</body>
+</html>
