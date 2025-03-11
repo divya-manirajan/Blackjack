@@ -1,0 +1,223 @@
+class Card:
+    def __init__(self, value, suit):
+        self.value = value
+        self.suit = suit
+
+
+def make_deck():
+    suits = ['heart', 'diamonds', 'spades', 'clubs']
+    face_values = ['ace', 'jack', 'queen', 'king']
+
+    deck = [Card(face_values[0], suit) for suit in suits]
+    for value in range(2,11):
+        for suit in suits:
+            deck.append(Card(value, suit))
+
+    for i in range(1,4):
+        for suit in suits:
+            deck.append(Card(face_values[i], suit))
+
+    return deck
+
+def print_deck(deck):
+    for i in deck:
+        print(i.value," of ", i.suit)
+        print('--------------------------')
+    print("total number: ", len(deck))
+    print('--------------------------')
+
+
+def print_card(card):
+    print(card.value," of ", card.suit)
+    print('--------------------------')
+
+def print_cards(cards):
+    for i in cards:
+        print(i.value," of ", i.suit)
+    total = get_total(cards)
+    
+    print("Total Value: ",total)
+    print('--------------------------')
+
+def get_total(cards):
+    total = 0
+    ace_count=0
+
+    for i in cards:
+        if(type(i.value) == (int)):
+            total+= i.value
+        elif i.value!='ace':
+            total+=10
+        else:
+            total += 11
+
+    while total > 21 and ace_count > 0:
+        total -= 10  # Convert one Ace from 11 to 1
+        ace_count -= 1
+
+    return total   
+
+
+def shuffle_deck(deck):
+    import random
+    random.shuffle(deck)
+    return(deck)
+
+
+def deal(shuffled_deck):
+    player_hand = []
+    dealer_hand = []
+
+    player_hand.append(shuffled_deck.pop(0))
+    dealer_hand.append(shuffled_deck.pop(0))
+    player_hand.append(shuffled_deck.pop(0))
+    dealer_hand.append(shuffled_deck.pop(0))
+
+    print("Player's Hand:")
+    print_cards(player_hand)
+
+    if(get_total(dealer_hand) == 21):
+        if(get_total(player_hand) == 21):
+            print("Tie")
+            exit()
+        else:
+            print("Player Loses")
+            exit()
+
+    if(get_total(player_hand) ==  21):
+        print("Dealer's Hand:")
+        print_cards(dealer_hand)
+
+        if(get_total(dealer_hand) == 21):
+            print("Tie")
+            exit()
+        else:
+            print("Player Wins!")
+            exit()
+
+    else:
+        print("Dealer's Hand:")
+        print("Hidden")
+        print_card(dealer_hand[1])
+
+    return player_hand, dealer_hand
+
+def hit(player_hand, dealer_hand, shuffled_deck):
+    total = 0
+    ace_count = 0
+
+    player_hand.append(shuffled_deck.pop(0))
+
+    print("Player's Hand:")
+    for i in player_hand:
+        print(i.value," of ", i.suit)
+        if(type(i.value) == (int)):
+            total+= i.value
+        elif i.value!='ace':
+            total+=10
+        else:
+            total += 11
+            ace_count+=1
+
+    while total > 21 and ace_count > 0:
+        total -= 10  # Convert one Ace from 11 to 1
+        ace_count -= 1
+
+    if total > 21:
+        print("Total Value:", total)
+        print("BUST")
+        print("Player Loses")
+        exit()
+
+    print("Total Value: ",total)
+    print('--------------------------')
+    print("Dealer's Hand:")
+    print("Hidden")
+    print_card(dealer_hand[1])
+
+def stay(player_hand, dealer_hand, shuffled_deck):
+
+    player_total = get_total(player_hand)
+    dealer_total = get_total(dealer_hand)
+
+    print("Player's Hand:")
+    print_cards(player_hand)
+    print("Dealer's Hand:")
+    print_cards(dealer_hand)
+
+    if(dealer_total >= 17):
+        if(player_total > dealer_total):
+            print("Player Wins!")
+            exit()
+        elif(player_total==dealer_total):
+            print("Tie")
+            exit()
+        else:
+            print("Player Loses")
+            exit()
+    while(dealer_total < 17):
+        dealer_hand.append(shuffled_deck.pop(0))
+        dealer_total = get_total(dealer_hand)
+
+        print("Player's Hand:")
+        print_cards(player_hand)
+        print("Dealer's Hand:")
+        print_cards(dealer_hand)
+
+    if(dealer_total > 21):
+        print("Dealer Busts")
+        print("Player Wins!")
+        exit()
+    elif(player_total > dealer_total):
+        print("Player Wins!")
+        exit()
+    elif(player_total==dealer_total):
+        print("Tie")
+        exit()
+    else:
+        print("Player Loses")
+        exit()
+
+
+def play_hand(player_hand, dealer_hand, shuffled_deck):
+
+    while True:
+        response = input("Hit or Stay or Quit \n")
+        print('--------------------------')
+
+        if response.lower() in ['hit' , 'h']:
+            hit(player_hand, dealer_hand, shuffled_deck)
+        elif response.lower() in ['stay' , 's']:
+            stay(player_hand, dealer_hand, shuffled_deck)
+        else:
+            break
+    
+    
+
+    # username = input("Enter username:")
+    # print("Username is: " + username)
+
+if __name__=="__main__":
+
+    deck = make_deck()
+
+    # print_deck(deck)
+
+    shuffled_deck = shuffle_deck(deck)
+
+    # print_deck(shuffled_deck)
+
+    # print_card(shuffled_deck.pop(0))
+    # print_card(shuffled_deck.pop(0))
+
+
+    # print_deck(shuffled_deck)
+
+    player_hand, dealer_hand = deal(shuffled_deck)
+
+    play_hand(player_hand, dealer_hand, shuffled_deck)
+
+ 
+
+
+

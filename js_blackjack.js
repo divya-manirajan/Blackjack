@@ -1,0 +1,270 @@
+class Card {
+    constructor(value, suit){
+        this.value = value
+        this.suit = suit
+    }
+}
+
+function make_deck(){
+    const suits = ['heart', 'diamonds', 'spades', 'clubs']
+    const face_values = ['ace', 'jack', 'queen', 'king']
+
+    const deck = []
+    for(let i = 0; i<suits.length; i++){
+        deck.push(new Card(face_values[0],suits[i]))
+    }
+
+    for(let i = 2; i<=10; i++){
+        for(let j = 0; j<face_values.length; j++){
+            deck.push(new Card(i,suits[j]))
+        }
+    }
+
+    for(let i = 1; i<face_values.length; i++){
+        for(let j = 0; j<suits.length; j++){
+            deck.push(new Card(face_values[i],suits[j]))
+        }
+    }
+
+    return deck
+}
+
+function shuffle_deck(deck) {
+    const shuffledDeck = deck.sort(() => Math.random() - 0.5);
+    return shuffledDeck;
+}
+
+function print_cards(cards){
+    for (const i of cards) {
+        console.log(i.value + " of " + i.suit);
+    }
+    console.log(get_total(cards))
+    console.log('----------------------------')
+}
+
+function deal(shuffledDeck){
+    const player_hand = []
+    const dealer_hand = []
+
+    player_hand.push(shuffledDeck.shift())
+    dealer_hand.push(shuffledDeck.shift())
+    player_hand.push(shuffledDeck.shift())
+    dealer_hand.push(shuffledDeck.shift())
+
+    console.log("Player's Hand:")
+    print_cards(player_hand)
+
+    if(get_total(dealer_hand) == 21){
+        console.log("Player's Hand:")
+        print_cards(player_hand)
+        console.log("Dealer's Hand:")
+        print_cards(dealer_hand)
+
+        if(get_total(player_hand) == 21){
+            console.log("Tie")
+            process.exit()
+        }
+        
+        else{
+            console.log("Player Loses")
+            process.exit()
+        }
+    }
+
+    if(get_total(player_hand) ==  21){
+        console.log("Dealer's Hand:")
+        print_cards(dealer_hand)
+
+        if(get_total(dealer_hand) == 21){
+            console.log("Tie")
+            process.exit()
+        }
+        else{
+            console.log("Player Wins!")
+            process.exit()
+        }
+    }
+    else{
+        console.log("Dealer's Hand:")
+        console.log("Hidden")
+        console.log(dealer_hand[1].value + " of " + dealer_hand[1].suit)
+        console.log('----------------------------')
+    }
+    return [player_hand, dealer_hand]
+}
+
+function get_total(cards){
+    let total = 0
+    let ace_count = 0
+
+    for(let i of cards){
+        if(typeof i.value == "number"){
+            total+= i.value
+        }
+        else if (i.value != 'ace'){
+            total+=10
+        }
+        else{
+            total+= 11
+            ace_count++
+        }
+        
+    }
+
+    while (total > 21 && ace_count>0){
+        total -= 10
+        ace_count -= 1
+    }
+
+    return total 
+}
+
+function hit(player_hand, dealer_hand, shuffled_deck){
+    let total = 0
+
+    player_hand.push(shuffled_deck.shift())
+
+    console.log("Player's Hand:")
+    print_cards(player_hand)
+    total = get_total(player_hand)
+
+    if (total > 21){
+        total = get_total(player_hand)
+        console.log("Total Value:", total)
+        console.log("BUST")
+        console.log("Player Loses")
+        process.exit();
+
+    }
+
+    console.log("Total Value: ",total)
+    console.log('--------------------------')
+    console.log("Dealer's Hand:")
+    console.log("Hidden")
+    console.log(dealer_hand[1].value + " of " + dealer_hand[1].suit)
+    console.log('----------------------------')
+
+}
+
+function stay(player_hand, dealer_hand, shuffled_deck){
+
+    let player_total = get_total(player_hand)
+    let dealer_total = get_total(dealer_hand)
+
+    console.log("Player's Hand:")
+    print_cards(player_hand)
+    console.log("Dealer's Hand:")
+    print_cards(dealer_hand)
+
+    if(dealer_total >= 17){
+        if(player_total > dealer_total){
+            console.log("Player Wins!")
+            process.exit()
+        }
+        else if(player_total==dealer_total){
+            console.log("Tie")
+            process.exit()
+        }
+        else{
+            console.log("Player Loses")
+            process.exit()
+        }
+    }
+    while(dealer_total < 17){
+        dealer_hand.push(shuffled_deck.shift())
+        dealer_total = get_total(dealer_hand)
+
+        console.log("Player's Hand:")
+        print_cards(player_hand)
+        console.log("Dealer's Hand:")
+        print_cards(dealer_hand)
+    }
+
+    if(dealer_total > 21){
+        console.log("Dealer Busts")
+        console.log("Player Wins!")
+        process.exit()
+    }
+    else if(player_total > dealer_total){
+        console.log("Player Wins!")
+        process.exit()
+    }
+    else if(player_total==dealer_total){
+        console.log("Tie")
+        process.exit()
+    }
+    else{
+        console.log("Player Loses")
+        process.exit()
+    }
+
+}
+
+function play_hand(player_hand, dealer_hand, shuffled_deck) {
+    const prompt = require("prompt-sync")(); 
+    while (true) {
+        let response = prompt("Hit or Stay or Quit: ").toLowerCase();
+        console.log('--------------------------')
+        
+        if (response === 'hit' || response === 'h') {
+            hit(player_hand, dealer_hand, shuffled_deck)
+        } else if (response === 'stay' || response === 's') {
+            stay(player_hand, dealer_hand, shuffled_deck)
+        } else {
+           break;
+        }
+    }
+}
+
+    // def play_hand(player_hand, dealer_hand, shuffled_deck):
+
+    // while True:
+    //     response = input("Hit or Stay or Quit \n")
+    //     print('--------------------------')
+
+    //     if response.lower() in ['hit' , 'h']:
+    //         hit(player_hand, dealer_hand, shuffled_deck)
+    //     elif response.lower() in ['stay' , 's']:
+    //         stay(player_hand, dealer_hand, shuffled_deck)
+    //     else:
+    //         break
+
+
+
+if (require.main === module) {
+    const deck = make_deck();
+    const shuffledDeck = shuffle_deck(deck)
+
+
+    const hands = deal(shuffledDeck)
+    const player_hand = hands[0]
+    const dealer_hand = hands[1]
+
+    play_hand(player_hand, dealer_hand, shuffledDeck)
+
+
+  
+
+
+}
+
+// if __name__=="__main__":
+
+//     deck = make_deck()
+
+//     # print_deck(deck)
+
+//     shuffled_deck = shuffle_deck(deck)
+
+//     # print_deck(shuffled_deck)
+
+//     # print_card(shuffled_deck.pop(0))
+//     # print_card(shuffled_deck.pop(0))
+
+
+//     # print_deck(shuffled_deck)
+
+//     player_hand, dealer_hand = deal(shuffled_deck)
+
+//     play_hand(player_hand, dealer_hand, shuffled_deck)
+

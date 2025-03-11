@@ -1,0 +1,22 @@
+{
+  "name": "testgit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js_blackjack.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/divya-manirajan/CS409-BackendProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/divya-manirajan/CS409-BackendProject/issues"
+  },
+  "homepage": "https://github.com/divya-manirajan/CS409-BackendProject#readme",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
