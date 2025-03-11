@@ -6,13 +6,54 @@
 <body>
     <button id="dealButton">Deal</button>
 
+    <h1>Player Hand: </h1>
+    <p id="player-hand-1"></p>
+    <p id="player-hand-2"></p>
+    <p id="player-total"></p>
+
+
+    <h1>Dealer Hand: </h1>
+    <p id="dealer-hand-1"></p>
+    <p id="dealer-hand-2"></p>
+    <p id="dealer-total"></p>
+
+    <button id="hitButton">Hit</button>
+    <button id="stayButton">Stay</button>
+
+
+
     <script src="game.js"></script> 
     <script>
+
+        let player_hand = []
+        let dealer_hand = []
+        let shuffledDeck = []
+
         document.getElementById('dealButton').addEventListener('click', () => {
             const deck = make_deck();
-            const shuffledDeck = shuffle_deck(deck);
-            deal(shuffledDeck);
+            shuffledDeck = shuffle_deck(deck);
+            const hands = deal(shuffledDeck);
+
+            player_hand = hands[0]
+            dealer_hand = hands[1]
+
+            document.getElementById("player-hand-1").textContent = (player_hand[0]["value"]+" of "+player_hand[0]["suit"])
+            document.getElementById("player-hand-2").textContent = (player_hand[1]["value"]+" of "+player_hand[1]["suit"])
+            document.getElementById("player-total").textContent = get_total(player_hand)
+
+            document.getElementById("dealer-hand-1").textContent = ("Hidden")
+            document.getElementById("dealer-hand-2").textContent = (dealer_hand[1]["value"]+" of "+dealer_hand[1]["suit"])
+
         });
+
+        document.getElementById('hitButton').addEventListener('click', () => {
+            hit(player_hand, dealer_hand, shuffledDeck)
+        });
+
+        document.getElementById('stayButton').addEventListener('click', () => {
+            stay(player_hand, dealer_hand, shuffledDeck)
+        })
+
     </script>
 </body>
 </html>

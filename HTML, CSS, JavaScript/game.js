@@ -62,12 +62,12 @@ function deal(shuffledDeck){
 
         if(get_total(player_hand) == 21){
             console.log("Tie")
-            process.exit()
+            
         }
         
         else{
             console.log("Player Loses")
-            process.exit()
+            
         }
     }
 
@@ -77,11 +77,11 @@ function deal(shuffledDeck){
 
         if(get_total(dealer_hand) == 21){
             console.log("Tie")
-            process.exit()
+            
         }
         else{
             console.log("Player Wins!")
-            process.exit()
+            
         }
     }
     else{
@@ -133,7 +133,7 @@ function hit(player_hand, dealer_hand, shuffled_deck){
         console.log("Total Value:", total)
         console.log("BUST")
         console.log("Player Loses")
-        process.exit();
+        ;
 
     }
 
@@ -158,15 +158,15 @@ function stay(player_hand, dealer_hand, shuffled_deck){
     if(dealer_total >= 17){
         if(player_total > dealer_total){
             console.log("Player Wins!")
-            process.exit()
+            
         }
         else if(player_total==dealer_total){
             console.log("Tie")
-            process.exit()
+            
         }
         else{
             console.log("Player Loses")
-            process.exit()
+            
         }
     }
     while(dealer_total < 17){
@@ -182,47 +182,18 @@ function stay(player_hand, dealer_hand, shuffled_deck){
     if(dealer_total > 21){
         console.log("Dealer Busts")
         console.log("Player Wins!")
-        process.exit()
+        
     }
     else if(player_total > dealer_total){
         console.log("Player Wins!")
-        process.exit()
+        
     }
     else if(player_total==dealer_total){
         console.log("Tie")
-        process.exit()
+        
     }
     else{
         console.log("Player Loses")
-        process.exit()
-    }
-}
-
-function play_hand(player_hand, dealer_hand, shuffled_deck) {
-    const prompt = require("prompt-sync")(); 
-    while (true) {
-        let response = prompt("Hit or Stay or Quit: ").toLowerCase();
-        console.log('--------------------------')
         
-        if (response === 'hit' || response === 'h') {
-            hit(player_hand, dealer_hand, shuffled_deck)
-        } else if (response === 'stay' || response === 's') {
-            stay(player_hand, dealer_hand, shuffled_deck)
-        } else {
-           break;
-        }
     }
-}
-
-
-if (require.main === module) {
-    const deck = make_deck();
-    const shuffledDeck = shuffle_deck(deck)
-
-
-    const hands = deal(shuffledDeck)
-    const player_hand = hands[0]
-    const dealer_hand = hands[1]
-
-    play_hand(player_hand, dealer_hand, shuffledDeck)
 }

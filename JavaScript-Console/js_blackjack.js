@@ -55,8 +55,6 @@ function deal(shuffledDeck){
     print_cards(player_hand)
 
     if(get_total(dealer_hand) == 21){
-        console.log("Player's Hand:")
-        print_cards(player_hand)
         console.log("Dealer's Hand:")
         print_cards(dealer_hand)
 
