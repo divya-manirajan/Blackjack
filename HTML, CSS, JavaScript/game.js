@@ -63,6 +63,7 @@ function deal(shuffledDeck){
         if(get_total(player_hand) == 21){
             console.log("Tie")
             
+            
         }
         
         else{
@@ -133,7 +134,6 @@ function hit(player_hand, dealer_hand, shuffled_deck){
         console.log("Total Value:", total)
         console.log("BUST")
         console.log("Player Loses")
-        ;
 
     }
 
@@ -197,3 +197,15 @@ function stay(player_hand, dealer_hand, shuffled_deck){
         
     }
 }
+
+function resetGame(){
+
+    document.getElementById('player-hand').textContent=""
+    document.getElementById('player-total').textContent=""
+    document.getElementById('dealer-hand-1').textContent=""
+    document.getElementById('dealer-hand-2').textContent=""
+    document.getElementById('dealer-hand').textContent=""
+    document.getElementById('dealer-total').textContent=""
+
+
+} 
