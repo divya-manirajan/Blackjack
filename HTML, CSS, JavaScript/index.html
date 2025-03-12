@@ -56,9 +56,6 @@
         });
 
         document.getElementById('hitButton').addEventListener('click', () => {
-
-            resetGame()
-
             hit(player_hand, dealer_hand, shuffledDeck)
 
             document.getElementById("player-hand").textContent = ""      
