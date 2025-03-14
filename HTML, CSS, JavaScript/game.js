@@ -207,5 +207,15 @@ function resetGame(){
     document.getElementById('dealer-hand').textContent=""
     document.getElementById('dealer-total').textContent=""
 
+    document.getElementById("player-status").textContent = ""
+
+    resetBtns()
 
 } 
+
+function resetBtns() {
+    document.getElementById('dealButton').disabled = false
+    document.getElementById('hitButton').disabled = true
+    document.getElementById('stayButton').disabled = true
+
+}
