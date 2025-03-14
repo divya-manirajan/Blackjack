@@ -34,66 +34,6 @@ function shuffle_deck(deck) {
     return shuffledDeck;
 }
 
-function print_cards(cards){
-    for (const i of cards) {
-        console.log(i.value + " of " + i.suit);
-    }
-    console.log(get_total(cards))
-    console.log('----------------------------')
-}
-
-function deal(shuffledDeck){
-    const player_hand = []
-    const dealer_hand = []
-
-    player_hand.push(shuffledDeck.shift())
-    dealer_hand.push(shuffledDeck.shift())
-    player_hand.push(shuffledDeck.shift())
-    dealer_hand.push(shuffledDeck.shift())
-
-    console.log("Player's Hand:")
-    print_cards(player_hand)
-
-    if(get_total(dealer_hand) == 21){
-        console.log("Player's Hand:")
-        print_cards(player_hand)
-        console.log("Dealer's Hand:")
-        print_cards(dealer_hand)
-
-        if(get_total(player_hand) == 21){
-            console.log("Tie")
-            
-            
-        }
-        
-        else{
-            console.log("Player Loses")
-            
-        }
-    }
-
-    if(get_total(player_hand) ==  21){
-        console.log("Dealer's Hand:")
-        print_cards(dealer_hand)
-
-        if(get_total(dealer_hand) == 21){
-            console.log("Tie")
-            
-        }
-        else{
-            console.log("Player Wins!")
-            
-        }
-    }
-    else{
-        console.log("Dealer's Hand:")
-        console.log("Hidden")
-        console.log(dealer_hand[1].value + " of " + dealer_hand[1].suit)
-        console.log('----------------------------')
-    }
-    return [player_hand, dealer_hand]
-}
-
 function get_total(cards){
     let total = 0
     let ace_count = 0
@@ -120,102 +60,141 @@ function get_total(cards){
     return total 
 }
 
-function hit(player_hand, dealer_hand, shuffled_deck){
-    let total = 0
+//---------------------------------------------------------//
 
-    player_hand.push(shuffled_deck.shift())
+let player_hand = []
+let dealer_hand = []
+let shuffledDeck = []
 
-    console.log("Player's Hand:")
-    print_cards(player_hand)
-    total = get_total(player_hand)
+const deck = make_deck();
+shuffledDeck = shuffle_deck(deck);
 
-    if (total > 21){
-        total = get_total(player_hand)
-        console.log("Total Value:", total)
-        console.log("BUST")
-        console.log("Player Loses")
-
-    }
-
-    console.log("Total Value: ",total)
-    console.log('--------------------------')
-    console.log("Dealer's Hand:")
-    console.log("Hidden")
-    console.log(dealer_hand[1].value + " of " + dealer_hand[1].suit)
-    console.log('----------------------------')
-}
-
-function stay(player_hand, dealer_hand, shuffled_deck){
-
-    let player_total = get_total(player_hand)
-    let dealer_total = get_total(dealer_hand)
-
-    console.log("Player's Hand:")
-    print_cards(player_hand)
-    console.log("Dealer's Hand:")
-    print_cards(dealer_hand)
-
-    if(dealer_total >= 17){
-        if(player_total > dealer_total){
-            console.log("Player Wins!")
-            
-        }
-        else if(player_total==dealer_total){
-            console.log("Tie")
-            
-        }
-        else{
-            console.log("Player Loses")
-            
-        }
-    }
-    while(dealer_total < 17){
-        dealer_hand.push(shuffled_deck.shift())
-        dealer_total = get_total(dealer_hand)
-
-        console.log("Player's Hand:")
-        print_cards(player_hand)
-        console.log("Dealer's Hand:")
-        print_cards(dealer_hand)
-    }
-
-    if(dealer_total > 21){
-        console.log("Dealer Busts")
-        console.log("Player Wins!")
-        
-    }
-    else if(player_total > dealer_total){
-        console.log("Player Wins!")
-        
-    }
-    else if(player_total==dealer_total){
-        console.log("Tie")
-        
-    }
-    else{
-        console.log("Player Loses")
-        
-    }
-}
-
-function resetGame(){
-
-    document.getElementById('player-hand').textContent=""
-    document.getElementById('player-total').textContent=""
-    document.getElementById('dealer-hand-1').textContent=""
-    document.getElementById('dealer-hand-2').textContent=""
-    document.getElementById('dealer-hand').textContent=""
-    document.getElementById('dealer-total').textContent=""
-
-    document.getElementById("player-status").textContent = ""
-
-    resetBtns()
-
-} 
+//---------------------------------------------------------//
 
 function resetBtns() {
     document.getElementById('dealButton').disabled = false
     document.getElementById('hitButton').disabled = true
     document.getElementById('stayButton').disabled = true
+}
+
+function clearDealerText(){
+    document.getElementById('dealer-hand-1').textContent = "";
+    document.getElementById('dealer-hand-2').textContent = "";
+    document.getElementById('dealer-hand').textContent = "";
+    document.getElementById('dealer-total').textContent = "";
+}
+
+function clearPlayerText(){
+    document.getElementById('player-hand').textContent = "";
+    document.getElementById('player-total').textContent = "";
+    document.getElementById("player-status").textContent = "";
+}
+
+function clearText() {
+    
+    clearPlayerText()
+    clearDealerText()
 
 }
+
+
+function showCards(hand, cards_id, total_id){
+    hand.forEach(card => {
+        const cardElement = document.createElement("span")
+        cardElement.textContent = card['value']+' of '+card['suit']
+        document.getElementById(cards_id).appendChild(cardElement)
+        document.getElementById(cards_id).appendChild(document.createElement('br'))
+    });
+    document.getElementById(total_id).textContent = "Total: "+get_total(hand)
+}
+
+function deal(){
+    dealer_hand = []
+    player_hand = []
+
+    clearText()
+
+    player_hand.push(shuffledDeck.shift())
+    dealer_hand.push(shuffledDeck.shift())
+    player_hand.push(shuffledDeck.shift())
+    dealer_hand.push(shuffledDeck.shift())
+
+
+    showCards(player_hand, "player-hand", "player-total")
+
+    document.getElementById("dealer-hand-1").textContent = ("Hidden")
+    document.getElementById("dealer-hand-2").textContent = (dealer_hand[1]["value"]+" of "+dealer_hand[1]["suit"])
+
+    if(get_total(player_hand) == 21 && get_total(dealer_hand) != 21){
+        clearDealerText()
+        showCards(dealer_hand, "dealer-hand", "dealer-total")
+        document.getElementById("player-status").textContent = "Player Wins."
+        resetBtns()
+    }
+    else if(get_total(player_hand) == 21 && get_total(dealer_hand) == 21){
+        clearDealerText()
+        showCards(dealer_hand, "dealer-hand", "dealer-total")
+        document.getElementById("player-status").textContent = "Tie."
+        resetBtns()
+    }
+    else if(get_total(player_hand) != 21 && get_total(dealer_hand) == 21){
+        clearDealerText()
+        showCards(dealer_hand, "dealer-hand", "dealer-total")
+        document.getElementById("player-status").textContent = "Dealer Wins."
+        resetBtns()
+    }
+    else {
+        document.getElementById('dealButton').disabled = true
+        document.getElementById('hitButton').disabled = false
+        document.getElementById('stayButton').disabled = false
+    }
+}
+
+function hit(){
+    clearPlayerText()
+    player_hand.push(shuffledDeck.shift())
+
+    showCards(player_hand, "player-hand", "player-total")
+
+    if(get_total(player_hand) > 21){
+        document.getElementById("player-status").textContent = "Player Busts. Dealer Wins."
+        resetBtns()
+    }
+}
+
+function stay(){
+
+    let dealer_total = get_total(dealer_hand)
+    let player_total = get_total(player_hand)
+
+
+    clearDealerText()
+
+    showCards(dealer_hand, "dealer-hand", "dealer-total")
+
+    while(dealer_total < 17){
+        dealer_hand.push(shuffledDeck.shift())
+        dealer_total = get_total(dealer_hand)
+        
+        clearDealerText()
+        showCards(dealer_hand, "dealer-hand", "dealer-total")
+    }
+
+    if(dealer_total > 21){
+        document.getElementById("player-status").textContent = "Dealer Busts. Player Wins."
+        resetBtns()
+    }
+    else if(dealer_total > player_total){
+        document.getElementById("player-status").textContent = "Dealer Wins."
+        resetBtns()
+    }
+    else if(dealer_total == player_total){
+        document.getElementById("player-status").textContent =  "Tie."
+        resetBtns()
+    }
+    else{
+        document.getElementById("player-status").textContent =  "Player Wins."
+        resetBtns()
+    }
+}
+

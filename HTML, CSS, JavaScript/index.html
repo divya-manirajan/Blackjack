@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Page Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="game.js"></script>
 </head>
 <body>
     <button id="dealButton">Deal</button>
@@ -23,142 +26,20 @@
 
     <h1 id="player-status"></h1>
 
-    <script src="game.js"></script> 
     <script>
-
-        let player_hand = []
-        let dealer_hand = []
-        let shuffledDeck = []
-
         document.getElementById('dealButton').addEventListener('click', () => {
-
-            resetGame()
-
-            const deck = make_deck();
-            shuffledDeck = shuffle_deck(deck);
-            const hands = deal(shuffledDeck);
-
-            player_hand = hands[0]
-            dealer_hand = hands[1]
-            
-            player_hand.forEach(card => {
-                const cardElement = document.createElement("span")
-                cardElement.textContent = card['value']+' of '+card['suit']
-                document.getElementById('player-hand').appendChild(cardElement)
-                document.getElementById('player-hand').appendChild(document.createElement('br'))
-
-            });
-            
-            document.getElementById("player-total").textContent = "Total: "+get_total(player_hand)
-
-            document.getElementById("dealer-hand-1").textContent = ("Hidden")
-            document.getElementById("dealer-hand-2").textContent = (dealer_hand[1]["value"]+" of "+dealer_hand[1]["suit"])
-
-            if(get_total(player_hand) == 21 && get_total(dealer_hand) != 21){
-                document.getElementById("dealer-hand-1").textContent = ""
-                document.getElementById("dealer-hand-2").textContent = ""
-                dealer_hand.forEach(card => {
-                    const cardElement = document.createElement("span")
-                    cardElement.textContent = card['value']+' of '+card['suit']
-                    document.getElementById('dealer-hand').appendChild(cardElement)
-                    document.getElementById('dealer-hand').appendChild(document.createElement('br'))
-                });
-                document.getElementById("dealer-total").textContent = "Total: "+get_total(dealer_hand)
-                document.getElementById("player-status").textContent = "Player Wins."
-                resetBtns()
-            }
-            else if(get_total(player_hand) == 21 && get_total(dealer_hand) == 21){
-                document.getElementById("dealer-hand-1").textContent = ""
-                document.getElementById("dealer-hand-2").textContent = ""
-                dealer_hand.forEach(card => {
-                    const cardElement = document.createElement("span")
-                    cardElement.textContent = card['value']+' of '+card['suit']
-                    document.getElementById('dealer-hand').appendChild(cardElement)
-                    document.getElementById('dealer-hand').appendChild(document.createElement('br'))
-                });
-                document.getElementById("dealer-total").textContent = "Total: "+get_total(dealer_hand)
-                document.getElementById("player-status").textContent = "Tie."
-                resetBtns()
-            }
-            else if(get_total(player_hand) != 21 && get_total(dealer_hand) == 21){
-                document.getElementById("dealer-hand-1").textContent = ""
-                document.getElementById("dealer-hand-2").textContent = ""
-                dealer_hand.forEach(card => {
-                    const cardElement = document.createElement("span")
-                    cardElement.textContent = card['value']+' of '+card['suit']
-                    document.getElementById('dealer-hand').appendChild(cardElement)
-                    document.getElementById('dealer-hand').appendChild(document.createElement('br'))
-                });
-                document.getElementById("dealer-total").textContent = "Total: "+get_total(dealer_hand)
-                document.getElementById("player-status").textContent = "Dealer Wins."
-               
-                resetBtns()
-            }
-            else {
-                document.getElementById('dealButton').disabled = true
-                document.getElementById('hitButton').disabled = false
-                document.getElementById('stayButton').disabled = false
-            }
-        });
+            deal()
+        })
 
         document.getElementById('hitButton').addEventListener('click', () => {
-            hit(player_hand, dealer_hand, shuffledDeck)
-
-            document.getElementById("player-hand").textContent = ""      
-            
-            player_hand.forEach(card => {
-                const cardElement = document.createElement("span")
-                cardElement.textContent = card['value']+' of '+card['suit']
-                document.getElementById('player-hand').appendChild(cardElement)
-                document.getElementById('player-hand').appendChild(document.createElement('br'))
-
-            });
-            
-            document.getElementById("player-total").textContent = "Total: "+get_total(player_hand)
-
-            if(get_total(player_hand) > 21){
-                document.getElementById("player-status").textContent = "Player Busts. Dealer Wins."
-                resetBtns()
-            }
-
-        });
+            hit()
+        })
 
         document.getElementById('stayButton').addEventListener('click', () => {
-            stay(player_hand, dealer_hand, shuffledDeck)
-
-            document.getElementById("dealer-hand-1").textContent = ""
-            document.getElementById("dealer-hand-2").textContent = ""
-            document.getElementById("dealer-hand").textContent = ""
-
-            dealer_hand.forEach(card => {
-                const cardElement = document.createElement("span")
-                cardElement.textContent = card['value']+' of '+card['suit']
-                document.getElementById('dealer-hand').appendChild(cardElement)
-                document.getElementById('dealer-hand').appendChild(document.createElement('br'))
-
-            });
-
-            document.getElementById("dealer-total").textContent = "Total: "+get_total(dealer_hand)
-
-            if(get_total(dealer_hand) > 21){
-                document.getElementById("player-status").textContent = "Dealer Busts. Player Wins."
-                resetBtns()
-
-            }
-            else if(get_total(dealer_hand) > get_total(player_hand)){
-                document.getElementById("player-status").textContent = "Dealer Wins."
-                resetBtns()
-
-            }
-            else {
-                document.getElementById("player-status").textContent = "Player Wins."
-                resetBtns()
-
-            }
-
-            
+            stay()
         })
 
     </script>
+
 </body>
 </html>
