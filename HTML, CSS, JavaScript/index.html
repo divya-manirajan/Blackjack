@@ -5,26 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="game.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button id="dealButton">Deal</button>
+    <div class="play-area">
+        <button id="dealButton">Deal</button>
 
-    <h1>Player Hand: </h1>
-    <div id="player-hand"></div>
-    <p id="player-total"></p>
+        <h1>Player Hand: </h1>
+        <div id="player-hand"></div>
+        <p id="player-total"></p>
 
 
-    <h1>Dealer Hand: </h1>
-    <div id="dealer-hand"></div>
-    <span id="dealer-hand-1"></span>
-    <br/>
-    <span id="dealer-hand-2"></span>
-    <p id="dealer-total"></p>
+        <h1>Dealer Hand: </h1>
+        <div id="dealer-hand"></div>
+        <span id="dealer-hand-1"></span>
+        <br/>
+        <span id="dealer-hand-2"></span>
+        <p id="dealer-total"></p>
 
-    <button id="hitButton" disabled>Hit</button>
-    <button id="stayButton" disabled>Stay</button>
+        <button id="hitButton" disabled>Hit</button>
+        <button id="stayButton" disabled>Stay</button>
 
-    <h1 id="player-status"></h1>
+        <h1 id="player-status"></h1>
+    </div>
 
     <script>
         document.getElementById('dealButton').addEventListener('click', () => {
