@@ -6,7 +6,7 @@ class Card {
 }
 
 function make_deck(){
-    const suits = ['heart', 'diamonds', 'spades', 'clubs']
+    const suits = ['hearts', 'diamonds', 'spades', 'clubs']
     const face_values = ['ace', 'jack', 'queen', 'king']
 
     const deck = []
@@ -78,8 +78,6 @@ function resetBtns() {
 }
 
 function clearDealerText(){
-    document.getElementById('dealer-hand-1').textContent = "";
-    document.getElementById('dealer-hand-2').textContent = "";
     document.getElementById('dealer-hand').textContent = "";
     document.getElementById('dealer-total').textContent = "";
 }
@@ -97,13 +95,11 @@ function clearText() {
 
 }
 
-
 function showCards(hand, cards_id, total_id){
     hand.forEach(card => {
-        const cardElement = document.createElement("span")
-        cardElement.textContent = card['value']+' of '+card['suit']
+        const cardElement = document.createElement("img")
+        cardElement.src = "/assets/"+card['value']+'_of_'+card['suit']+".svg"
         document.getElementById(cards_id).appendChild(cardElement)
-        document.getElementById(cards_id).appendChild(document.createElement('br'))
     });
     document.getElementById(total_id).textContent = "Total: "+get_total(hand)
 }
@@ -121,10 +117,18 @@ function deal(){
 
 
     showCards(player_hand, "player-hand", "player-total")
+    showCards(dealer_hand, "dealer-hand", "dealer-total")
 
-    document.getElementById("dealer-hand-1").textContent = ("Hidden")
-    document.getElementById("dealer-hand-2").textContent = (dealer_hand[1]["value"]+" of "+dealer_hand[1]["suit"])
+    const container = document.getElementById("dealer-hand");
+    const firstImg = container.querySelector("img");     
 
+    const newImg = document.createElement("img");
+    newImg.src = "assets/back_of_card.svg";
+
+    container.replaceChild(newImg, firstImg); 
+
+    document.getElementById("dealer-total").textContent = ""
+    
     if(get_total(player_hand) == 21 && get_total(dealer_hand) != 21){
         clearDealerText()
         showCards(dealer_hand, "dealer-hand", "dealer-total")

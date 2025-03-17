@@ -28,6 +28,11 @@ body {
     border: 3px solid #1E8449; /* Slightly darker border */
 }
 
+img{
+    width: 100px;
+    padding: 2px;
+}
+
 /* Buttons Styling */
 button {
     background-color: #E74C3C; /* Red buttons */
