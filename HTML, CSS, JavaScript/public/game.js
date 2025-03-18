@@ -66,9 +66,6 @@ let player_hand = []
 let dealer_hand = []
 let shuffledDeck = []
 
-const deck = make_deck();
-shuffledDeck = shuffle_deck(deck);
-
 //---------------------------------------------------------//
 
 function resetBtns() {
@@ -89,10 +86,8 @@ function clearPlayerText(){
 }
 
 function clearText() {
-    
     clearPlayerText()
     clearDealerText()
-
 }
 
 function showCards(hand, cards_id, total_id){
@@ -105,10 +100,13 @@ function showCards(hand, cards_id, total_id){
 }
 
 function deal(){
+    const deck = make_deck();
+    shuffledDeck = shuffle_deck(deck);
     dealer_hand = []
     player_hand = []
-
     clearText()
+
+    console.log("Number of Cards Before Deal: ",shuffledDeck.length)
 
     player_hand.push(shuffledDeck.shift())
     dealer_hand.push(shuffledDeck.shift())
@@ -152,9 +150,14 @@ function deal(){
         document.getElementById('hitButton').disabled = false
         document.getElementById('stayButton').disabled = false
     }
+
+    console.log("Number of Cards After Deal: ",shuffledDeck.length)
+
 }
 
 function hit(){
+    console.log("Number of Cards Before Hit: ",shuffledDeck.length)
+
     clearPlayerText()
     player_hand.push(shuffledDeck.shift())
 
@@ -164,9 +167,13 @@ function hit(){
         document.getElementById("player-status").textContent = "Player Busts. Dealer Wins."
         resetBtns()
     }
+    console.log("Number of Cards After Hit: ",shuffledDeck.length)
+
 }
 
 function stay(){
+    console.log("Number of Cards Before Stay: ",shuffledDeck.length)
+
 
     let dealer_total = get_total(dealer_hand)
     let player_total = get_total(player_hand)
@@ -200,5 +207,8 @@ function stay(){
         document.getElementById("player-status").textContent =  "Player Wins."
         resetBtns()
     }
+
+    console.log("Number of Cards After Stay: ",shuffledDeck.length)
+
 }
 
